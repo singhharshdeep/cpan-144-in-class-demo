@@ -50,7 +50,7 @@ export default function Main() {
     const searchValue = event.target.value;
 
     const searchResults = products.filter((product) =>
-      product.title.includes(searchValue),
+      product.title.toLowerCase().includes(searchValue.toLowerCase()),
     );
 
     setFilteredProducts(searchResults);
