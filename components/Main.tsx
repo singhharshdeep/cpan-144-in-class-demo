@@ -1,7 +1,16 @@
 import { Product, products } from "@/data";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import ProductCardUI from "./ProductCard";
 
-function Products({ filteredProducts }: { filteredProducts: Product[] }) {
+function Products({
+  filteredProducts,
+  cartProducts,
+  setCartProducts,
+}: {
+  filteredProducts: Product[];
+  cartProducts: Product[];
+  setCartProducts: Dispatch<SetStateAction<Product[]>>;
+}) {
   return filteredProducts.length === 0 ? (
     <div>No results found</div>
   ) : (
@@ -13,38 +22,51 @@ function Products({ filteredProducts }: { filteredProducts: Product[] }) {
     >
       {filteredProducts.map((product) => (
         // Product card
-        <div
+        <ProductCardUI
           key={product.id}
-          style={{
-            width: 250,
-            height: 350,
-            border: "1px solid black",
-          }}
-        >
-          <img
-            src={product.image}
-            style={{
-              width: 250,
-              height: 250,
-            }}
-          />
-          <div
-            style={{
-              borderTop: "1px solid black",
-            }}
-          >
-            {product.title}
-          </div>
-          <div>{product.category}</div>
-          <div>${product.price}</div>
-        </div>
+          product={product}
+          cartProducts={cartProducts}
+          setCartProducts={setCartProducts}
+        />
       ))}
+    </div>
+  );
+}
+
+function CartProducts({
+  cartProducts,
+  setCartProducts,
+}: {
+  cartProducts: Product[];
+  setCartProducts: Dispatch<SetStateAction<Product[]>>;
+}) {
+  console.log("Cart Products");
+  console.log(cartProducts);
+  return (
+    <div>
+      <h2>Cart</h2>
+      <div
+        style={{
+          display: "flex",
+        }}
+      >
+        {cartProducts.map((product) => (
+          // Product card
+          <ProductCardUI
+            key={product.id}
+            product={product}
+            cartProducts={cartProducts}
+            setCartProducts={setCartProducts}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
 export default function Main() {
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [cartProducts, setCartProducts] = useState<Product[]>([]);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const searchValue = event.target.value;
@@ -54,6 +76,20 @@ export default function Main() {
     );
 
     setFilteredProducts(searchResults);
+  }
+
+  function handlePriceSort() {
+    const sortedProducts = filteredProducts.toSorted(
+      (a, b) => a.price - b.price,
+    );
+    setFilteredProducts(sortedProducts);
+  }
+
+  function handleRatingSort() {
+    const sortedProducts = filteredProducts.toSorted(
+      (a, b) => b.rating.rate - a.rating.rate,
+    );
+    setFilteredProducts(sortedProducts);
   }
 
   return (
@@ -73,8 +109,18 @@ export default function Main() {
         placeholder="Search products"
         onChange={handleChange}
       />
+      <button onClick={handlePriceSort}>Sort: Price Low to high</button>
+      <button onClick={handleRatingSort}>Sort: Rating high to low</button>
 
-      <Products filteredProducts={filteredProducts} />
+      <Products
+        filteredProducts={filteredProducts}
+        cartProducts={cartProducts}
+        setCartProducts={setCartProducts}
+      />
+      <CartProducts
+        cartProducts={cartProducts}
+        setCartProducts={setCartProducts}
+      />
     </main>
   );
 }
