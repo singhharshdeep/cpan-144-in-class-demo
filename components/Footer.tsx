@@ -5,7 +5,6 @@ export default function Footer() {
         width: "100%",
         position: "absolute",
         bottom: 0,
-        margin: 15,
         padding: 15,
         border: "1px solid black",
       }}
