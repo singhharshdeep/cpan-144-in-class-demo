@@ -1,11 +1,13 @@
 import { createContext, ReactNode, useState } from "react";
 
-export const StyleContext = createContext<{
+interface IStyleContext {
   bgColor: string;
   currentFont: string;
   isDarkModeEnabled: boolean;
   setIsDarkModeEnabled: (isEnabled: boolean) => void;
-}>({
+}
+
+export const StyleContext = createContext<IStyleContext>({
   bgColor: "",
   currentFont: "",
   isDarkModeEnabled: false,
@@ -15,7 +17,7 @@ export const StyleContext = createContext<{
 export default function StyleProvider({ children }: { children: ReactNode }) {
   const bgColor = "white";
   const currentFont = "Ariel";
-  const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(true);
+  const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(false);
 
   return (
     <StyleContext.Provider
