@@ -1,46 +1,7 @@
 import { useContext } from "react";
-import ProductCardUI from "./ProductCard";
 import { CartContext } from "@/contexts/CartProvider";
-
-function Products() {
-  const { filteredProducts } = useContext(CartContext);
-
-  return filteredProducts.length === 0 ? (
-    <div>No results found</div>
-  ) : (
-    <div
-      style={{
-        display: "flex",
-        gap: 15,
-      }}
-    >
-      {filteredProducts.map((product) => (
-        // Product card
-        <ProductCardUI key={product.id} product={product} />
-      ))}
-    </div>
-  );
-}
-
-function CartProducts() {
-  const { cartProducts } = useContext(CartContext);
-
-  return (
-    <div>
-      <h2>Cart</h2>
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
-        {cartProducts.map((product) => (
-          // Product card
-          <ProductCardUI key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
-  );
-}
+import CartProducts from "./CartProducts";
+import Products from "./Products";
 
 export default function Main() {
   const { handleChange, handlePriceSort, handleRatingSort } =
