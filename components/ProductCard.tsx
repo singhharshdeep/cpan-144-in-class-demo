@@ -3,28 +3,8 @@ import { Product } from "@/data";
 import { useContext } from "react";
 
 export default function ProductCardUI({ product }: { product: Product }) {
-  const { cartProducts, setCartProducts } = useContext(CartContext);
-  function handleAddToCart() {
-    console.log("Adding to cart....");
-    // Access the current product
-    // Add the current product to cartProducts state
-    setCartProducts(
-      // Create a new array
-      [
-        // We copy everything from cartProducts
-        ...cartProducts,
-        // We add(append) our new product to it
-        product,
-      ],
-    );
-    // setCartProducts([product]);
-  }
-
-  function removeFromCart() {
-    console.log("Removing from cart");
-    console.log(cartProducts.filter((p) => product.id !== p.id));
-    setCartProducts(cartProducts.filter((p) => product.id !== p.id));
-  }
+  const { cartProducts, handleAddToCart, removeFromCart } =
+    useContext(CartContext);
 
   return (
     <div
@@ -53,8 +33,10 @@ export default function ProductCardUI({ product }: { product: Product }) {
       <div>${product.price}</div>
       <div>Rating: {product.rating.rate}</div>
       <button
-        onClick={
-          cartProducts.includes(product) ? removeFromCart : handleAddToCart
+        onClick={() =>
+          cartProducts.includes(product)
+            ? removeFromCart(product)
+            : handleAddToCart(product)
         }
       >
         {cartProducts.includes(product) ? "Remove from cart" : "Add to Cart"}

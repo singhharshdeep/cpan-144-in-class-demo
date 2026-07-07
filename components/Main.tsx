@@ -1,15 +1,10 @@
-import { Product, products } from "@/data";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import { useContext } from "react";
 import ProductCardUI from "./ProductCard";
 import { CartContext } from "@/contexts/CartProvider";
 
-function Products({ filteredProducts }: { filteredProducts: Product[] }) {
+function Products() {
+  const { filteredProducts } = useContext(CartContext);
+
   return filteredProducts.length === 0 ? (
     <div>No results found</div>
   ) : (
@@ -30,8 +25,6 @@ function Products({ filteredProducts }: { filteredProducts: Product[] }) {
 function CartProducts() {
   const { cartProducts } = useContext(CartContext);
 
-  console.log("Cart Products");
-  console.log(cartProducts);
   return (
     <div>
       <h2>Cart</h2>
@@ -50,31 +43,8 @@ function CartProducts() {
 }
 
 export default function Main() {
-  const [filteredProducts, setFilteredProducts] = useState(products);
-
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const searchValue = event.target.value;
-
-    const searchResults = products.filter((product) =>
-      product.title.toLowerCase().includes(searchValue.toLowerCase()),
-    );
-
-    setFilteredProducts(searchResults);
-  }
-
-  function handlePriceSort() {
-    const sortedProducts = filteredProducts.toSorted(
-      (a, b) => a.price - b.price,
-    );
-    setFilteredProducts(sortedProducts);
-  }
-
-  function handleRatingSort() {
-    const sortedProducts = filteredProducts.toSorted(
-      (a, b) => b.rating.rate - a.rating.rate,
-    );
-    setFilteredProducts(sortedProducts);
-  }
+  const { handleChange, handlePriceSort, handleRatingSort } =
+    useContext(CartContext);
 
   return (
     <main
@@ -96,7 +66,7 @@ export default function Main() {
       <button onClick={handlePriceSort}>Sort: Price Low to high</button>
       <button onClick={handleRatingSort}>Sort: Rating high to low</button>
 
-      <Products filteredProducts={filteredProducts} />
+      <Products />
       <CartProducts />
     </main>
   );
