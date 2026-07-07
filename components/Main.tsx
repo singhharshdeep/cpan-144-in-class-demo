@@ -1,16 +1,15 @@
 import { Product, products } from "@/data";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import ProductCardUI from "./ProductCard";
+import { CartContext } from "@/contexts/CartProvider";
 
-function Products({
-  filteredProducts,
-  cartProducts,
-  setCartProducts,
-}: {
-  filteredProducts: Product[];
-  cartProducts: Product[];
-  setCartProducts: Dispatch<SetStateAction<Product[]>>;
-}) {
+function Products({ filteredProducts }: { filteredProducts: Product[] }) {
   return filteredProducts.length === 0 ? (
     <div>No results found</div>
   ) : (
@@ -22,24 +21,15 @@ function Products({
     >
       {filteredProducts.map((product) => (
         // Product card
-        <ProductCardUI
-          key={product.id}
-          product={product}
-          cartProducts={cartProducts}
-          setCartProducts={setCartProducts}
-        />
+        <ProductCardUI key={product.id} product={product} />
       ))}
     </div>
   );
 }
 
-function CartProducts({
-  cartProducts,
-  setCartProducts,
-}: {
-  cartProducts: Product[];
-  setCartProducts: Dispatch<SetStateAction<Product[]>>;
-}) {
+function CartProducts() {
+  const { cartProducts } = useContext(CartContext);
+
   console.log("Cart Products");
   console.log(cartProducts);
   return (
@@ -52,12 +42,7 @@ function CartProducts({
       >
         {cartProducts.map((product) => (
           // Product card
-          <ProductCardUI
-            key={product.id}
-            product={product}
-            cartProducts={cartProducts}
-            setCartProducts={setCartProducts}
-          />
+          <ProductCardUI key={product.id} product={product} />
         ))}
       </div>
     </div>
@@ -66,7 +51,6 @@ function CartProducts({
 
 export default function Main() {
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const [cartProducts, setCartProducts] = useState<Product[]>([]);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const searchValue = event.target.value;
@@ -112,15 +96,8 @@ export default function Main() {
       <button onClick={handlePriceSort}>Sort: Price Low to high</button>
       <button onClick={handleRatingSort}>Sort: Rating high to low</button>
 
-      <Products
-        filteredProducts={filteredProducts}
-        cartProducts={cartProducts}
-        setCartProducts={setCartProducts}
-      />
-      <CartProducts
-        cartProducts={cartProducts}
-        setCartProducts={setCartProducts}
-      />
+      <Products filteredProducts={filteredProducts} />
+      <CartProducts />
     </main>
   );
 }

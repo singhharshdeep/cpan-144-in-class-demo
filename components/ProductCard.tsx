@@ -1,15 +1,9 @@
+import { CartContext } from "@/contexts/CartProvider";
 import { Product } from "@/data";
-import { Dispatch, SetStateAction } from "react";
+import { useContext } from "react";
 
-export default function ProductCardUI({
-  product,
-  cartProducts,
-  setCartProducts,
-}: {
-  product: Product;
-  cartProducts: Product[];
-  setCartProducts: Dispatch<SetStateAction<Product[]>>;
-}) {
+export default function ProductCardUI({ product }: { product: Product }) {
+  const { cartProducts, setCartProducts } = useContext(CartContext);
   function handleAddToCart() {
     console.log("Adding to cart....");
     // Access the current product
@@ -28,7 +22,7 @@ export default function ProductCardUI({
 
   function removeFromCart() {
     console.log("Removing from cart");
-    console.log(cartProducts.filter((p) => product.id !== p.id))
+    console.log(cartProducts.filter((p) => product.id !== p.id));
     setCartProducts(cartProducts.filter((p) => product.id !== p.id));
   }
 
