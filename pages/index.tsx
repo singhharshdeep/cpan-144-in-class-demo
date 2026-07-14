@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
 import CartProvider from "@/contexts/CartProvider";
@@ -8,16 +7,7 @@ export default function Home() {
   return (
     <StyleProvider>
       <CartProvider>
-        <div>
-          {/* Header section */}
-          <Header />
-
-          {/* Main Section */}
-          <Main />
-
-          {/* Footer section */}
-          {/* <Footer /> */}
-        </div>
+        <Main />
       </CartProvider>
     </StyleProvider>
   );
