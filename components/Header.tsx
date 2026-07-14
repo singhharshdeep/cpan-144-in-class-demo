@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import CartWidget from "./CartWidget";
 import { StyleContext } from "@/contexts/StyleProvider";
+import Link from "next/link";
 
 export default function Header() {
   const { isDarkModeEnabled } = useContext(StyleContext);
@@ -17,9 +18,9 @@ export default function Header() {
     >
       <h2>ProductCatalog</h2>
       <CartWidget />
-      <div>
-        <button>Login</button>
-      </div>
+      <Link href="/about">About</Link>
+      <Link href="/contact">Contact</Link>
+      <Link href="/login">Login</Link>
     </header>
   );
 }
