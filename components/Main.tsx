@@ -2,31 +2,21 @@ import { useContext } from "react";
 import { CartContext } from "@/contexts/CartProvider";
 import CartProducts from "./CartProducts";
 import Products from "./Products";
+import Button from "./Button";
+import Input from "./Input";
 
 export default function Main() {
   const { handleChange, handlePriceSort, handleRatingSort } =
     useContext(CartContext);
 
   return (
-    <main
-      style={{
-        margin: 15,
-      }}
-    >
+    <main className="m-4">
       {/* Search bar */}
-      <input
-        style={{
-          marginBottom: 15,
-          height: 50,
-          width: 500,
-        }}
-        type="text"
-        placeholder="Search products"
-        onChange={handleChange}
-      />
-      <button onClick={handlePriceSort}>Sort: Price Low to high</button>
-      <button onClick={handleRatingSort}>Sort: Rating high to low</button>
-
+      <div className="flex gap-x-2 mb-4">
+        <Input placeholder="Search products" onChange={handleChange} />
+        <Button onClick={handlePriceSort} label="Sort: Price Low to high" />
+        <Button onClick={handleRatingSort} label="Sort: Rating high to low" />
+      </div>
       <Products />
       <CartProducts />
     </main>
