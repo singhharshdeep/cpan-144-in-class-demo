@@ -8,13 +8,7 @@ export default function Header() {
 
   return (
     <header
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        margin: 15,
-        borderBottom: "1px solid black",
-        backgroundColor: isDarkModeEnabled ? "black" : "white",
-      }}
+      className={`flex justify-between m-3.75 border-b-2 border-b-black`}
     >
       <h2>ProductCatalog</h2>
       <CartWidget />

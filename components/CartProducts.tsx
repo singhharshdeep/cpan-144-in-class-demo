@@ -8,11 +8,7 @@ export default function CartProducts() {
   return (
     <div>
       <h2>Cart</h2>
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
+      <div className="flex">
         {cartProducts.map((product) => (
           // Product card
           <ProductCardUI key={product.id} product={product} />
