@@ -8,7 +8,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <div className="h-screen">
       <Header />
       <Component {...pageProps} />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

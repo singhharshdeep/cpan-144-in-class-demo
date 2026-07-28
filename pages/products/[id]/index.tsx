@@ -1,16 +1,28 @@
 import { products } from "@/data";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function ProductDetailsPage() {
   const router = useRouter();
-
-  console.log(useRouter());
+  const [tabTitle, setTabTitle] = useState("title");
 
   const productId = router.query.id;
 
   const foundProduct = products.find(
     (product) => product.id === Number(productId),
   );
+
+  useEffect(() => {
+    console.log("Changing tab title");
+    if (foundProduct) {
+      if (tabTitle === "title") {
+        document.title = foundProduct.title;
+      } else {
+        document.title = foundProduct.category;
+      }
+    }
+  }, [tabTitle, foundProduct]);
+
   return foundProduct ? (
     <div>
       <h2>Product Details page</h2>
@@ -26,6 +38,14 @@ export default function ProductDetailsPage() {
       <div>{foundProduct?.description}</div>
       <div>${foundProduct?.price}</div>
       <div>${foundProduct?.rating.rate}</div>
+      <button
+        onClick={() => {
+          if (tabTitle === "title") setTabTitle("category");
+          else setTabTitle("title");
+        }}
+      >
+        Toggle Title
+      </button>
     </div>
   ) : (
     <div>
