@@ -10,7 +10,7 @@ export default function Header() {
     <header
       className={`flex justify-between m-3.75 border-b-2 border-b-black`}
     >
-      <h2>ProductCatalog</h2>
+      <Link href="/">ProductCatalog</Link>
       <CartWidget />
       <Link href="/about">About</Link>
       <Link href="/contact">Contact</Link>

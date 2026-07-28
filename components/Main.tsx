@@ -1,6 +1,10 @@
+import { lazy, Suspense } from "react";
 import { useContext } from "react";
 import { CartContext } from "@/contexts/CartProvider";
-import CartProducts from "./CartProducts";
+
+// Lazy loaded component
+const CartProducts = lazy(() => import("@/components/CartProducts"));
+
 import Products from "./Products";
 import Button from "./Button";
 import Input from "./Input";
@@ -18,7 +22,9 @@ export default function Main() {
         <Button onClick={handleRatingSort} label="Sort: Rating high to low" />
       </div>
       <Products />
-      <CartProducts />
+      <Suspense fallback={<div>Loading....</div>}>
+        <CartProducts />
+      </Suspense>
     </main>
   );
 }
