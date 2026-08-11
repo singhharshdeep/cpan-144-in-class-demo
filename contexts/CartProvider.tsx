@@ -12,6 +12,8 @@ interface ICartContext {
   handleRatingSort: () => void;
   handleAddToCart: (product: Product) => void;
   removeFromCart: (product: Product) => void;
+  isLoading: boolean;
+  apiError: string | null;
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -22,6 +24,8 @@ export const CartContext = createContext<ICartContext>({
   handleRatingSort: () => {},
   handleAddToCart: () => {},
   removeFromCart: () => {},
+  isLoading: false,
+  apiError: null,
 });
 
 export default function CartProvider({
@@ -30,7 +34,7 @@ export default function CartProvider({
   children: React.ReactNode;
 }) {
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
 
@@ -52,7 +56,7 @@ export default function CartProvider({
       const response = await axios.get(API_URL);
       setFilteredProducts(response.data);
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.log("Inside the catch block");
       console.log(error);
       setIsLoading(false);
@@ -76,7 +80,7 @@ export default function CartProvider({
 
   function handlePriceSort() {
     const sortedProducts = filteredProducts.toSorted(
-      (a, b) => a.price - b.price,
+      (a: { price: number }, b: { price: number }) => a.price - b.price,
     );
     setFilteredProducts(sortedProducts);
   }
