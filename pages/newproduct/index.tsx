@@ -5,13 +5,10 @@ export default function NewProductPage() {
   const [productTitle, setProductTitle] = useState("");
   const [productPrice, setProductPrice] = useState("");
 
-  async function handleSubmit(event:) {
+  async function handleSubmit(event: React.SubmitEvent) {
     event.preventDefault();
     const product = { title: productTitle, price: Number(productPrice) };
-    const response = await axios.post(
-      "https://fakestoreapi.com/products",
-      product,
-    );
+    await axios.post("https://fakestoreapi.com/products", product);
     alert("Product created");
   }
 
