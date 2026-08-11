@@ -1,5 +1,8 @@
 import { Product, products } from "@/data";
-import { ChangeEvent, createContext, useState } from "react";
+import { ChangeEvent, createContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const API_URL = "https://fakestoreapi.com/products";
 
 interface ICartContext {
   cartProducts: Product[];
@@ -27,7 +30,39 @@ export default function CartProvider({
   children: React.ReactNode;
 }) {
   const [cartProducts, setCartProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
+
+  // useEffect(() => {
+  //   console.log("Calling API");
+  //   axios
+  //     .get(API_URL)
+  //     .then((response) => {
+  //       setFilteredProducts(response.data);
+  //     })
+  //     .catch((error) => {
+  //
+  //     });
+  // }, []);
+
+  async function fetchProductsFromApi() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(API_URL);
+      setFilteredProducts(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Inside the catch block");
+      console.log(error);
+      setIsLoading(false);
+      setApiError(error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchProductsFromApi();
+  }, []);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const searchValue = event.target.value;
@@ -85,6 +120,8 @@ export default function CartProvider({
         handleRatingSort,
         handleAddToCart,
         removeFromCart,
+        isLoading,
+        apiError,
       }}
     >
       {children}

@@ -10,13 +10,21 @@ import ProductCardUI, {
 import Button from "./Button";
 
 export default function Products() {
-  const { filteredProducts, cartProducts, removeFromCart, handleAddToCart } =
+  const { filteredProducts, cartProducts, removeFromCart, handleAddToCart, isLoading, apiError } =
     useContext(CartContext);
+
+  if (isLoading) {
+    return <div>Loading....</div>
+  }
+
+  if (apiError) {
+    return <div>{apiError}</div>
+  }
 
   return filteredProducts.length === 0 ? (
     <div>No results found</div>
   ) : (
-    <div className="flex gap-2">
+    <div className="grid grid-cols-5 gap-2">
       {filteredProducts.map((product) => (
         // Product card
         <ProductCardUI
